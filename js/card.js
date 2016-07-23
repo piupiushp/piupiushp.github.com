@@ -155,7 +155,7 @@ function setPlatform($platform, $cardTemp, $prev, $next, $curtain, imgs, $intros
 		curtainClick: function ($obj) {
 
 			$obj.children('#screen').empty();
-			$obj.css('display') === 'none' ? $obj.css({'display': 'none'}) : null;
+			$obj.css({'display': 'none'});
 		},
 	};
 };
