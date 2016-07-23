@@ -1,0 +1,45 @@
+html, body, div, h1, h2, 
+h3, p, img, input, textarea, ol, 
+ul, li, button, label, a, nav {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	outline: 0;
+	background: transparent;
+	display: block;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+ol, ul {
+	list-style-type: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.clear-both {
+	clear: both;
+}
+
+/*成为焦点*/
+:focus {
+	outline: 0;
+}
