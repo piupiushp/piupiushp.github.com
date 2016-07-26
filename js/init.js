@@ -1,5 +1,6 @@
 var isMobile = isMobileAgent(),
 	$win = $(window),
+	$body = $('body'),
 	$main = $('#main'),
 	$mainTest = $('#main-test'),
 	$album = $('#album'),
@@ -32,10 +33,13 @@ loading();
 
 function loading() {
 
+	var bgUrl = 'pic/bg.jpg';
+
 	winResize();
 	$win.resize(winResize);
 	loadingInterval = setInterval(loadInit, 33);
-	loadImgs(['pic/bg.jpg'].concat(imgs), init);
+	loadImgs([bgUrl].concat(imgs), init);
+	$body.css({'background-image': 'url(' + bgUrl + ')'});
 };
 
 function init() {
