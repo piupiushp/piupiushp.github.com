@@ -29,20 +29,6 @@ var Position = {
 	},
 };
 
-function getSize($obj) {
-
-	return {'width': $obj.width(), 'height': $obj.height()};
-};
-
-function bgResize($obj, picRatio) {
-
-	var objRatio = $obj.width() / $obj.height();
-
-	objRatio > picRatio ? 
-		$obj.css({'background-size': '100% auto'}) :
-		$obj.css({'background-size': 'auto 100%'});
-};
-
 function isMobileAgent() {
 
 	return /mobile/i.test(navigator.userAgent);
@@ -67,12 +53,22 @@ function setFontSize($obj, $test, screenRatio) {
 	$obj.css({'font-size': ratio * 2000 + '%'});
 };
 
-function getScreenRatio(mobileNum, pcNum) {
+function getScreenRatioForGivenLen(pcLen, mobileHoriLen, mobileVertiLen) {
 
-	var availWidth = window.screen.availWidth,
-		trueWidth = document.body.clientWidth;
+	var w = document.body.clientWidth,
+		h = document.body.clientHeight,
+		screenW = window.screen.availWidth;
 
-	return isMobileAgent() ? trueWidth / availWidth / mobileNum : 1 / pcNum;
+	return isMobileAgent() ? 
+				isHorizontal() ? 
+					w / mobileHoriLen : 
+					h / mobileVertiLen :
+				screenW / pcLen;
+};
+
+function resizeForChangeOrientation(funcHori, funcVerti) {
+
+	$win.width() > $win.height() ?  funcHori() : funcVerti();
 };
 
 function loadImgs(imgArr, func) {

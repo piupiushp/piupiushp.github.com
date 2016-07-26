@@ -16,51 +16,44 @@ var isMobile = isMobileAgent(),
 		'pic/6.jpg',
 		'pic/7.jpg',
 		'pic/8.jpg',
-		'pic/9.jpg',
-		'pic/10.jpg',
-		'pic/11.jpg',
-		'pic/12.jpg',
-		'pic/13.jpg',
-		'pic/14.jpg',
 	],
 	$intros = $('.intro'),
 	$loadingCurtain = $('#loading-curtain'),
 	$loadingScreen = $('#loading-screen'),
+	$card = $('#card'),
 	hCenter = Position.hCenter,
 	vCenter = Position.vCenter,
 	center = Position.center,
 	draw = drawLoading($('#loading-screen canvas'), 300, 300, 50, 3, 0.3, 10),
-	loadingInterval = setInterval(draw, 33);
+	loadingInterval;
 
 
-winResize();
-$win.resize(winResize);
-loadImgs(['pic/bg.jpg'].concat(imgs), init);
+loading();
+
+function loading() {
+
+	winResize();
+	$win.resize(winResize);
+	loadingInterval = setInterval(loadInit, 33);
+	loadImgs(['pic/bg.jpg'].concat(imgs), init);
+};
 
 function init() {
 
-	var $card = $('#card'),
-		$loadingCurtain = $('#loading-curtain'),
-		$cardTemp = $card.clone().removeAttr('id').removeClass('test'),
-		event = setPlatform($album, $cardTemp, $('#prev'), $('#next'), 
-					$curtain, imgs, $intros);
+	var $cardTemp = $card.clone().removeAttr('id').removeClass('test'),
+		event = setPlatform($album, $cardTemp, $curtain, imgs, $intros);
 	
 	clearInterval(loadingInterval);
-	$main.click(function (e) { mainClick(e, event); });
 	$album.css({'display': 'block'});
+
+	isMobile ? 
+		$main.on('touchend', function (e) { mainClick(e, event); }) :
+		$main.click(function (e) { mainClick(e, event); });
+	
 	$loadingCurtain.animate({'opacity': 0}, 500, 'linear', function () {
 
 		$loadingCurtain.css({'display': 'none'});
 	})
-};
-
-function winResize() {
-
-	screenRatio = getScreenRatio(1.5, 1);
-	setFontSize($main, $mainTest, screenRatio);
-	isMobile ? resizeForChangeOrientation(funcHori, funcVerti) : funcHori();
-	center($screen, $main);
-	center($loadingScreen, $loadingCurtain);
 };
 
 function mainClick(e, event) {
@@ -69,9 +62,6 @@ function mainClick(e, event) {
 
 	switch ($obj.attr('class')) {
 
-		case 'arror': 
-			event.arrorClick($obj);
-			break;
 		case 'card-coating':
 			$obj = $obj.parent();
 			event.cardClick($obj);
@@ -83,9 +73,15 @@ function mainClick(e, event) {
 	};
 };
 
-function resizeForChangeOrientation(funcHori, funcVerti) {
+function winResize() {
 
-	$win.width() > $win.height() ?  funcHori() : funcVerti();
+	screenRatio = getScreenRatioForGivenLen(1000, 1000, 1000);
+	setFontSize($main, $mainTest, screenRatio);
+
+	center($screen, $main);
+	center($loadingScreen, $loadingCurtain);
+
+	isMobile ? resizeForChangeOrientation(funcHori, funcVerti) : funcHori();
 };
 
 function funcHori() {
@@ -104,4 +100,10 @@ function funcVerti() {
 	$main.addClass('verti').removeClass('hori');
 	$album.css({'left': 'auto'});
 	vCenter($album, $main);
+};
+
+function loadInit() {
+
+	$loadingScreen.css({'display': 'block'});
+	draw();
 };
