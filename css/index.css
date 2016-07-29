@@ -93,8 +93,7 @@ body {
 	padding-top: 0.5em;
 	line-height: 1.1;
 	text-align: center;
-	color: #333;
-	opacity: 0.5;
+	opacity: 0.7;
 }
 
 .hori .intro {
@@ -136,7 +135,7 @@ body {
 	display: none;
 }
 
-/**/
+/*content*/
 .info-block {
 
 	width: 100%;
@@ -187,6 +186,22 @@ body {
 	font-size: 1.1em;
 }
 
+#I-am {
+
+	color: #333;
+}
+
+#I-did {
+
+	color: #234;
+}
+
+#projects a {
+
+	text-decoration: underline;
+}
+
+/*load*/
 #loading {
 
 	width: 10em;
