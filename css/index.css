@@ -153,6 +153,11 @@ body {
 	position: relative;
 }
 
+.verti .title {
+
+	font-size: 1.7em;
+}
+
 .title:before {
 
 	content: ' ';
@@ -199,6 +204,11 @@ body {
 #projects a {
 
 	text-decoration: underline;
+}
+
+.verti #projects a {
+
+	font-size: 1.2em;
 }
 
 /*load*/
