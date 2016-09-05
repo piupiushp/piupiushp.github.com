@@ -1,113 +1,133 @@
-var isMobile = isMobileAgent(),
+var isMoblie = isSome('mobile'),
 	$win = $(window),
 	$body = $('body'),
 	$main = $('#main'),
-	$mainTest = $('#main-test'),
-	$album = $('#album'),
-	$curtain = $('#curtain'),
-	$screen = $('#screen'),
-	imgs = [
+	$mainTest = $('#main-test');
 
-		'pic/0.jpg',
-		'pic/1.jpg',
-		'pic/2.jpg',
-		'pic/3.jpg',
-		'pic/4.jpg',
-		'pic/5.jpg',
-		'pic/6.jpg',
-		'pic/7.jpg',
-		'pic/8.jpg',
-	],
-	$intros = $('.intro'),
-	$loadingCurtain = $('#loading-curtain'),
-	$loadingScreen = $('#loading-screen'),
-	$card = $('#card'),
-	hCenter = Position.hCenter,
-	vCenter = Position.vCenter,
-	center = Position.center,
-	draw = drawLoading($('#loading-screen canvas'), 300, 300, 50, 3, 0.3, 10),
-	loadingInterval;
+//Run---------------------------------------------------------
+init();
 
-
-loading();
-
-function loading() {
-
-	var bgUrl = 'pic/bg.jpg';
-
-	winResize();
-	$win.resize(winResize);
-	loadingInterval = setInterval(loadInit, 33);
-	loadImgs([bgUrl].concat(imgs), init);
-	$body.css({'background-image': 'url(' + bgUrl + ')'});
-};
-
+//Initialization----------------------------------------------
 function init() {
 
-	var $cardTemp = $card.clone().removeAttr('id').removeClass('test'),
-		event = setPlatform($album, $cardTemp, $curtain, imgs, $intros);
-	
-	clearInterval(loadingInterval);
-	$album.css({'display': 'block'});
+	winResize();
+	completeHtml();
 
-	isMobile ? 
-		$main.on('touchend', function (e) { mainClick(e, event); }) :
-		$main.click(function (e) { mainClick(e, event); });
-	
-	$loadingCurtain.animate({'opacity': 0}, 500, 'linear', function () {
+	bindEvent(
 
-		$loadingCurtain.css({'display': 'none'});
-	})
+			[
+				$win,
+				'resize',
+				[winResize]
+			],
+			[
+				$main,
+				isMoblie ? 'touchstart' : 'click',
+				[click]
+			],
+			[
+				$win,
+				'scroll',
+				[scroll]
+			]
+		);
 };
 
-function mainClick(e, event) {
-
-	var $obj = $(e.srcElement || e.target);
-
-	switch ($obj.attr('class')) {
-
-		case 'card-coating':
-			$obj = $obj.parent();
-			event.cardClick($obj);
-			break;
-		case 'curtain':
-			event.curtainClick($obj);
-		default:
-			break;
-	};
-};
-
+//Event-------------------------------------------------------
 function winResize() {
 
-	screenRatio = getScreenRatioForGivenLen(1000, 1000, 1000);
-	setFontSize($main, $mainTest, screenRatio);
+	runFuncBySizeGrad(
 
-	center($screen, $main);
-	center($loadingScreen, $loadingCurtain);
+			[0, 600],
 
-	isMobile ? resizeForChangeOrientation(funcHori, funcVerti) : funcHori();
+			function (i) {
+
+				var classArr = ['S', 'L'];
+
+				$main.removeClass();
+				$main.addClass(classArr[i]);	
+			}
+		);
+
+	runFuncBySizeGrad(
+
+			[0, 600, 800, 1000], 
+			
+			function (i) {
+
+				var fontSizeArr = [
+					'12px', 
+					getFontSizebyGivenLen($mainTest, 50),
+					getFontSizebyGivenLen($mainTest, 60),
+					getFontSizebyGivenLen($mainTest, 80)
+				];
+
+				$main.css({'font-size': fontSizeArr[i]});
+			}
+		);
 };
 
-function funcHori() {
+function scroll() {
 
-	var $card = $('.card');
-
-	$main.addClass('hori').removeClass('verti');
-	$album.css({'top': 'auto'});
-	hCenter($album, $main);
 };
 
-function funcVerti() {
+function click(e) {
 
-	var $card = $('.card');
+	setEvent(
+			{
+				'card-film': function ($obj) {
 
-	$main.addClass('verti').removeClass('hori');
-	$album.css({'left': 'auto'});
-	vCenter($album, $main);
+					var card = $obj.attr('card');
+
+					$('#main-curtain').css({'display': 'block'});
+					$('#main-stage').append($('#card' + card + '-content'));
+				},
+				'main-curtain': function () {
+
+					var card = $('#main-stage').children('.card-content').attr('card');
+
+					$('.card').eq(card).append($('#card' + card + '-content'));
+					$('#main-curtain').css({'display': 'none'});
+				},
+			}
+		)(e);
 };
 
-function loadInit() {
+//Function-----------------------------------------------------
+function completeHtml() {
+	
+	var $cards = $('.card'),
+		cardsBg = [
 
-	$loadingScreen.css({'display': 'block'});
-	draw();
+			'pic/cbg0.jpg',
+			'pic/cbg1.jpg',
+			'pic/cbg2.jpg',
+			'pic/cbg3.jpg',
+			'pic/cbg4.jpg',
+			'pic/cbg5.jpg',
+			'pic/cbg6.jpg',
+			'pic/cbg7.jpg',
+		];
+
+	setCard();
+	setBg($cards, cardsBg);
+};
+
+function setCard() {
+
+	var $cards = $('.card'),
+		len = $cards.length, i = 0;
+
+	for (; i < len; i++) {
+
+		$cards.eq(i).css(
+				{
+					'transform': 'rotate(' + (-50 + i * 14) + 'deg)',
+					'-ms-transform': 'rotate(' + (-50 + i * 14) + 'deg)',
+					'-moz-transform': 'rotate(' + (-50 + i * 14) + 'deg)',
+					'-webkit-transform': 'rotate(' + (-50 + i * 14) + 'deg)',
+					'-o-transform': 'rotate(' + (-50 + i * 14) + 'deg)',
+				}
+			);
+	};
 };
