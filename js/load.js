@@ -5,7 +5,7 @@ function loading() {
 	var $loadCurtain = $('#load-curtain'),
 		$loadStagePos = $('<div></div>'),
 		$loadStage = $('<div></div>'),
-		$face = $('<p>(-ω- )</p>'),
+		$face = $('<p></p>'),
 		face = [
 			'(-ω- )',
 			'(+ω+)',
@@ -60,8 +60,9 @@ function loading() {
 
 	timeInterval = setInterval(function () {
 
-		i === len ? i = 0 : i++;
+		i === len ? i = 0 : null;
 		$face.empty().text(face[i]);
+		i++;
 	}, 100);
 
 	$(window).load(function () {
