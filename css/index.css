@@ -166,12 +166,6 @@ body {
 	border-radius: 50%;
 }
 
-.card-content li {
-
-	float: left;
-	clear: both;
-}
-
 /*card0-content-------------------------------*/
 #head {
 
@@ -208,12 +202,24 @@ body {
 	text-decoration: underline;
 }
 
+#card1-content li {
+
+	float: left;
+	clear: both;
+}
+
 /*card2-content-------------------------------*/
 #else-links a {
 
 	font-size: 1.3em;
 	line-height: 1.5em;
 	text-decoration: underline;
+}
+
+#card2-content li {
+
+	float: left;
+	clear: both;
 }
 
 /*test----------------------------------------*/
